@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CampusCapital Users</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 500px;
+            margin: 40px auto;
+            background: #fff;
+            padding: 2em 2.5em 2em 2.5em;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+        }
+        form {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 1.5em;
+        }
+        input[type="text"], input[type="email"] {
+            flex: 1;
+            padding: 0.5em;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            padding: 0.5em 1.2em;
+            background: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        ul.users {
+            list-style: none;
+            padding: 0;
+        }
+        ul.users li {
+            background: #f1f1f1;
+            margin-bottom: 8px;
+            padding: 0.7em 1em;
+            border-radius: 4px;
+        }
+        .flash-success {
+            color: #155724;
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            padding: 0.5em 1em;
+            border-radius: 4px;
+            margin-bottom: 1em;
+        }
+        .flash-danger {
+            color: #721c24;
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            padding: 0.5em 1em;
+            border-radius: 4px;
+            margin-bottom: 1em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>CampusCapital Users</h1>
+        <form method="POST" action="{{ url_for('main.add_user') }}" id="userForm">
+            <input type="text" name="username" placeholder="Username" required>
+            <input type="email" name="email" placeholder="Email" required>
+            <button type="submit">Add User</button>
+        </form>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div class="flash-{{ category }}">{{ message }}</div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+        <ul class="users" id="userList">
+            {% for user in users %}
+                <li>{{ user.username }} ({{ user.email }})</li>
+            {% endfor %}
+        </ul>
+    </div>
+    <script>
+        // Optional: Add simple client-side validation or interactivity
+        document.getElementById('userForm').addEventListener('submit', function(e) {
+            const username = this.username.value.trim();
+            const email = this.email.value.trim();
+            if (!username || !email) {
+                alert('Please fill in both fields.');
+                e.preventDefault();
+            }
+        });
+    </script>
+</body>
+</html>
